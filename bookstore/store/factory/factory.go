@@ -1,4 +1,10 @@
-// store/factory/factory.go
+package factory
+
+import (
+	"bookstore/store"
+	"fmt"
+	"sync"
+)
 
 var (
 	providersMu sync.RWMutex
@@ -20,7 +26,7 @@ func Register(name string, p store.Store) {
 
 func New(providerName string) (store.Store, error) {
 	providersMu.RLock()
-	p, ok := provider[providerName]
+	p, ok := providers[providerName]
 	providersMu.RUnlock()
 	if !ok {
 		return nil, fmt.Errorf("store: unknown provider %s", providerName)
